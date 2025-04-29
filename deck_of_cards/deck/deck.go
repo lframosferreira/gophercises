@@ -32,12 +32,21 @@ func New(options ...func(*Deck)) Deck {
 	return deck
 }
 
-func ShuffleCards(should_shuffle bool) func(*Deck) {
+func ShuffleCards() func(*Deck) {
 	return func(deck *Deck) {
-		if should_shuffle {
-			rand.Shuffle(len(deck.cards), func(i, j int) {
-				deck.cards[i], deck.cards[j] = deck.cards[j], deck.cards[i]
-			})
+		rand.Shuffle(len(deck.cards), func(i, j int) {
+			deck.cards[i], deck.cards[j] = deck.cards[j], deck.cards[i]
+		})
+	}
+}
+
+func AddJokers(amount int) func(*Deck) {
+	return func(deck *Deck) {
+
+		jokers := make([]Card, amount)
+		for i := range amount {
+			jokers[i] = Card{number: -1, suit: "joker"}
 		}
+		deck.cards = append(deck.cards, jokers...)
 	}
 }
