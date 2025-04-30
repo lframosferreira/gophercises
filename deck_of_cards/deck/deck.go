@@ -2,6 +2,7 @@ package deck
 
 import (
 	"math/rand"
+	"sort"
 )
 
 type Card struct {
@@ -48,5 +49,13 @@ func AddJokers(amount int) func(*Deck) {
 			jokers[i] = Card{number: -1, suit: "joker"}
 		}
 		deck.cards = append(deck.cards, jokers...)
+	}
+}
+
+func Sort(sort_func func(i, j int) bool) func(*Deck) {
+	return func(deck *Deck) {
+		sort.Slice(deck.cards, func(i, j int) bool {
+			return deck.cards[i].number < deck.cards[j].number
+		})
 	}
 }

@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
-	deck := deck.New(deck.AddJokers(5), deck.ShuffleCards())
+	deck := deck.New(deck.AddJokers(5))
 	fmt.Print(deck)
 }
