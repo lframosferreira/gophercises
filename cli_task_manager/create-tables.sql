@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS task;
+CREATE TABLE task (
+    id INT AUTO_INCREMENT NOT NULL,
+    description VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`id`)
+)
