@@ -57,19 +57,26 @@ func main() {
 			panic("Command do should have a parameter")
 		}
 		task_id := os.Args[2]
-		query := "DELETE FROM task WHERE id = " + task_id + " RETURNING id, description;"
-		fmt.Println(query)
+		query := "SELECT * FROM task WHERE id = " + task_id
 		row := db.QueryRow(query)
 		var id int
 		var description string
 		if err != nil {
 			panic("Error deleting task")
-
 		}
 		err := row.Scan(&id, &description)
-		if err != nil {
+		switch err {
+		case sql.ErrNoRows:
+			fmt.Println("No rows with this id in the database")
+			os.Exit(1)
+		case nil:
+
+		default:
 			fmt.Println(err.Error())
-			panic("Error scanning deleted row")
+			os.Exit(1)
+		}
+		if _, err := db.Exec("DELETE FROM task WHERE id = " + task_id); err != nil {
+			fmt.Println("Error deleting task")
 		}
 		fmt.Println("You have completed the \"" + description + "\" task")
 
